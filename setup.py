@@ -10,5 +10,8 @@ setup(
     version=__version__,
     author='reorx',
     description='html main body extractor',
-    py_modules=['readability']
+    py_modules=['readability'],
+    install_requires=[
+        'BeautifulSoup4==4.1.3',
+    ]
 )
