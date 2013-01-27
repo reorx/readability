@@ -14,7 +14,9 @@ REGEX_PATTERNS = {
                            remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|\
                            pagination|pager|popup|tweet|twitter",  # x
 
-    'okMaybeItsACandidate': "and|article|body|column|main|shadow",  # x
+    'okMaybeItsACandidate': "and|article|body|column|main|shadow|post",
+
+    'socialPlugins': "linkwithin|jiathis",
 
     'positive': "article|body|content|entry|hentry|main|page|pagination|post|text|\
                  blog|story|footnote",  # x
@@ -34,15 +36,9 @@ REGEX_PATTERNS = {
 
     'shouldNotExist': "<wbr[^>]*>",  # x
 
-    'trim': "^\s+|\s+$",
-
     'normalize': "\s{2,}",
 
     'killBreaks': "(<br\s*/?>(\s|&nbsp;?)*)+",  # x
-
-    'videos': "http://(www\.)?(youtube|vimeo)\.com",
-
-    'skipFootnoteLink': "^\s*(\[?[a-z0-9]{1,2}\]?|^|edit|citation needed)\s*$",
 
     'nextLink': "(next|weiter|continue|>([^\|]|$)|»([^\|]|$))",
 
@@ -71,9 +67,10 @@ def get_element_readable_string(e):
 
 
 def format_html(html):
-    cleaned = html
-    # cleaned = REGEX_OBJS['replaceBrs'].sub("</p><p>", html)
-    cleaned = REGEX_OBJS['shouldNotExist'].sub("", cleaned)
+    """
+    Replace deprecated tags
+    """
+    cleaned = REGEX_OBJS['shouldNotExist'].sub("", html)
     cleaned = REGEX_OBJS['replaceFonts'].sub("<\g<1>span>", cleaned)
     return cleaned
 
@@ -113,6 +110,8 @@ def fix_images_path(node, url):
 
 
 def clean_node(node):
+    # TODO replace brs
+
     # clean empty tags
     for e in node.find_all(['a', 'b', 'div', 'p', 'span', 'h*', 'article', 'section', 'ul', 'li']):
         # has image
@@ -166,7 +165,15 @@ def clean_node(node):
 
 class Readability:
     """
-    readability means the deepest & largest node in a html tree
+    Find the deepest & largest node in a html tree
+
+    Usage:
+
+    >>> parser = Readability(html, url)
+    >>> parser.title
+    # title of the article
+    >>> parser.article
+    # main body
     """
     USELESS_TAGS = ['script', 'style', 'link', 'textarea']
 
@@ -186,15 +193,14 @@ class Readability:
         'comma': u'\uff0c',
     }
 
-    IN_TEST_MODE = False
+    DEBUG = False
 
-    def __init__(self, source, url):
+    def __init__(self, source, url=None):
         assert isinstance(source, unicode), 'source should be unicode'
         self.url = url
 
         self.raw_source = source
 
-        # Replace <br> as </p><p>,
         # the incomplete <p> or </p> will be fixed when soup is constructed
         self.source = format_html(source)
 
@@ -224,7 +230,9 @@ class Readability:
         self.winner = self.tops[0]
 
         # use copy_node to prevent winner node from changed
-        self.article = fix_images_path(clean_node(copy_node(self.winner['node'])), self.url)
+        self.article = clean_node(copy_node(self.winner['node']))
+        if self.url:
+            self.article = fix_images_path(self.article, self.url)
 
     def get_readable_nodes(self):
         """
@@ -237,19 +245,27 @@ class Readability:
         """
         self.players = []
 
-        # Traversal of the tree should be as less as possible
+        # NOTE Traversal of the tree should be as less as possible
         for e in self.soup.body.find_all(True):
-            # Filter the impossible nodes semantically before go into play
-            id_and_class = ''
-            if e.get('id'):
-                id_and_class += e.get('id')
-            if e.get('class'):
-                id_and_class += ' '.join(e.get('class'))
+            # If no `__dict__`, its a already removed tag (include children of the removed tag)
+            if not e.__dict__:
+                continue
 
-            if REGEX_OBJS['unlikelyCandidates'].search(id_and_class) and\
-                    not REGEX_OBJS['okMaybeItsACandidate'].search(id_and_class):
+            # Filter the impossible nodes semantically before go into play
+            id_and_class_list = []
+            if e.get('id'):
+                id_and_class_list.append(e.get('id'))
+            if e.get('class'):
+                id_and_class_list += (e.get('class'))
+            id_and_class = '_'.join(id_and_class_list)
+
+            # Remove social plugins
+            if REGEX_OBJS['socialPlugins'].search(id_and_class) or\
+                    (REGEX_OBJS['unlikelyCandidates'].search(id_and_class) and
+                     not REGEX_OBJS['positive'].search(id_and_class)):
                 logging.debug('Reject a node and its children, class & id: %s' % id_and_class)
-                e.extract()
+                # Use `decompose` instead of `extract` to avoid iteration of the removed tags' children
+                e.decompose()
                 continue
 
             # Clean empty tags
@@ -401,69 +417,17 @@ class Readability:
         return current_players
 
     def _print_players(self, players):
-        if not self.IN_TEST_MODE:
+        if not self.DEBUG:
             return
         for i in players:
             logging.debug(
                 'deepth:%s text_len:%s priority:%s pre_priority:%s -score:%s +score:%s p_br_num:%s comma_num:%s' %
                 (i['deepth'], i['text_len'], i['priority'], i['previous_priority'], i['negative_score'], i['positive_score'], i['p_br_num'], i['comma_num']))
             logging.debug('    ' + i['node'].get_text().strip().replace('\n', '')[:100])
-            # test.debug(str(i['node'].attr))
 
     def _debug_round(self, name, players):
-        if not self.IN_TEST_MODE:
+        if not self.DEBUG:
             return
         for loop, i in enumerate(players):
             with open('round_%s_%s.html' % (name, loop), 'w') as f:
                 f.write(str(i['node']))
-
-
-if __name__ == '__main__':
-
-    import requests
-    from torext.utils.shell import start_shell
-    from yuefm.utils import detect_html_encoding
-
-    url = raw_input('url: ')
-
-    # source_str = requests.get(url).content
-    # detector = UnicodeDammit(source_str, is_html=True)
-    # ec = detector.original_encoding
-    # print 'encoding', ec
-    # if ec != 'utf-8':
-    #     for i in ('gbk', 'gb2312', 'gb18030'):
-    #         try:
-    #             source_u = source_str.decode(i)
-    #             break
-    #         except:
-    #             pass
-    # else:
-    #     source_u = source_str.decode(ec)
-    # parser = Readability(source_u, url)
-
-    html = requests.get(url, timeout=3).content
-
-    ec, html_u = detect_html_encoding(html)
-
-    Readability.IN_TEST_MODE = True
-    parser = Readability(html_u, url)
-
-    print 'title ', parser.title
-
-    with open('index_article.html', 'w') as f:
-        f.write(str(parser.article))
-
-    for loop, i in enumerate(parser.tops):
-        with open('index_top_%s.html' % loop, 'w') as f:
-            f.write(str(i['node']))
-    # os.system('google-chrome index.html')
-
-    # art = BeautifulSoup(parser.content)
-
-    # print art.prettify()
-
-    start_shell({
-        'parser': parser,
-        'BeautifulSoup': BeautifulSoup,
-        # 'art': art,
-    })
