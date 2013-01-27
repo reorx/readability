@@ -4,13 +4,19 @@
 import os
 import glob
 import codecs
+import difflib
+import logging
 from readability import Readability
 
 
 # TODO string similarity comparision
 
-os.chdir(os.path.join(__file__, 'cases'))
+os.chdir(os.path.join(os.path.dirname(__file__), 'cases'))
 HTML_FILES = glob.glob('*.html')
+
+
+def distance_rate(a, b):
+    return difflib.SequenceMatcher(a=a, b=b).ratio()
 
 
 def test_readability():
@@ -19,9 +25,20 @@ def test_readability():
 
 
 def check_readability(filename):
-    with codecs.open('utf8', filename, 'r') as f:
+    with codecs.open(filename, 'r', 'utf8') as f:
         html = f.read()
-    with codecs.open('utf8', filename.replace('.html', '.txt'), 'r') as f:
+    with codecs.open(filename.replace('.html', '.txt'), 'r', 'utf8') as f:
         text = f.read()
 
     parser = Readability(html)
+    article_text = parser.article.get_text()
+    rate = distance_rate(article_text, text)
+    print article_text
+    print 'rate', rate
+    assert rate > 0.85
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    for fn, arg in test_readability():
+        fn(arg)
