@@ -9,6 +9,10 @@ import posixpath
 from bs4 import BeautifulSoup
 
 
+logger = logging.getLogger('readability')
+logger.setLevel(logging.INFO)
+
+
 REGEX_PATTERNS = {
     'unlikelyCandidates': "combx|comment|comments|cmt|cmts|community|disqus|extra|foot|header|menu|\
                            remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|\
@@ -215,6 +219,7 @@ class Readability:
             self.title = self.soup.find('title').text.strip()
         except:
             pass
+        logging.info(u'got html title: %s', self.title)
 
         remove_tags(self.soup, self.USELESS_TAGS)
 
@@ -263,7 +268,7 @@ class Readability:
             if REGEX_OBJS['socialPlugins'].search(id_and_class) or\
                     (REGEX_OBJS['unlikelyCandidates'].search(id_and_class) and
                      not REGEX_OBJS['positive'].search(id_and_class)):
-                logging.debug('Reject a node and its children, class & id: %s' % id_and_class)
+                logger.debug('Reject a node and its children, class & id: %s' % id_and_class)
                 # Use `decompose` instead of `extract` to avoid iteration of the removed tags' children
                 e.decompose()
                 continue
@@ -302,7 +307,7 @@ class Readability:
         self.priority_desc_players = sorted(self.players, key=lambda x: x['priority'], reverse=True)
         next_round = self.priority_desc_players[:self.FACTORS['elimination']]
 
-        logging.debug('# round one processing: basic front players')
+        logger.debug('# round one processing: basic front players')
         self._print_players(next_round)
         self._debug_round('one', next_round)
 
@@ -313,7 +318,7 @@ class Readability:
 
             p['priority'] += p['children_num'] * self.FACTORS['children']
 
-        logging.debug('# round one over')
+        logger.debug('# round one over')
         self._print_players(next_round)
         self._debug_round('one', next_round)
 
@@ -330,7 +335,7 @@ class Readability:
                     go_next = False
             if go_next:
                 next_round.append(p)
-        logging.debug('# round two over')
+        logger.debug('# round two over')
         self._print_players(next_round)
         self._debug_round('two', next_round)
 
@@ -350,7 +355,7 @@ class Readability:
                         go_final = False
                 if go_final:
                     next_round.append(p)
-            logging.debug('# round three over')
+            logger.debug('# round three over')
             self._print_players(next_round)
             self._debug_round('three', next_round)
 
@@ -381,7 +386,7 @@ class Readability:
             for i in id_and_classes:
                 if REGEX_OBJS['negative'].search(i) and\
                         not REGEX_OBJS['positive'].search(i):
-                    logging.debug('top %s find negative %s' % (loop, i))
+                    logger.debug('top %s find negative %s' % (loop, i))
                     negative_score += 1
 
                 if REGEX_OBJS['positive'].search(i) and\
@@ -411,7 +416,7 @@ class Readability:
             player['offset'] = offset
             player['priority'] += offset * 4
 
-        logging.debug('# final round over')
+        logger.debug('# final round over')
         self._print_players(current_players)
 
         return current_players
@@ -420,10 +425,10 @@ class Readability:
         if not self.DEBUG:
             return
         for i in players:
-            logging.debug(
+            logger.debug(
                 'deepth:%s text_len:%s priority:%s pre_priority:%s -score:%s +score:%s p_br_num:%s comma_num:%s' %
                 (i['deepth'], i['text_len'], i['priority'], i['previous_priority'], i['negative_score'], i['positive_score'], i['p_br_num'], i['comma_num']))
-            logging.debug('    ' + i['node'].get_text().strip().replace('\n', '')[:100])
+            logger.debug('    ' + i['node'].get_text().strip().replace('\n', '')[:100])
 
     def _debug_round(self, name, players):
         if not self.DEBUG:
