@@ -431,3 +431,14 @@ class Readability:
         for loop, i in enumerate(players):
             with open('round_%s_%s.html' % (name, loop), 'w') as f:
                 f.write(str(i['node']))
+
+
+if __name__ == '__main__':
+    import requests
+
+    html = requests.get('http://blog.hucheng.com/articles/482.html').content
+    parser = Readability(html.decode('utf8'))
+
+    print parser.title
+    print parser.article
+    print parser.article.get_text()
