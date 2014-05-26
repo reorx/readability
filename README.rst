@@ -6,7 +6,9 @@ Readability
 Another algorithm & implementation of widely known readability conception.
 
 
-Usage::
+Usage:
+
+.. code-block:: python
 
     import requests
     from readability import Readability
