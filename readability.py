@@ -3,6 +3,7 @@
 
 # TODO argparse
 # TODO option to strip text in elements
+# TODO fix bug for newest beautifulsoup4
 
 import re
 # import math
