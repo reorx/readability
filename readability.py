@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# TODO argparse
+# TODO option to strip text in elements
+
 import re
 # import math
 import logging
@@ -107,6 +110,10 @@ def _get_node_flag(i):
 
 
 def copy_node(node):
+    """
+    Copy node to a new BeautifulSoup object, do some formatting & cleaning
+    at the same time.
+    """
     # Strip \n between contents
     contents = []
     for loop, i in enumerate(node.children):
@@ -123,8 +130,12 @@ def copy_node(node):
             last_flag = i_flag
         contents.append(i)
 
-    node_str = stringify_contents(contents)
-    return BeautifulSoup(node_str)
+    node_u = stringify_contents(contents)
+
+    # Fix &nbsp; show as \xa0 problem
+    # http://stackoverflow.com/questions/19508442/beautiful-soup-and-unicode-problems
+    node_u = node_u.replace(u'\xa0', u' ')
+    return BeautifulSoup(node_u)
 
 
 def fix_images_path(node, url):
@@ -280,7 +291,7 @@ class Readability:
     def get_article_content(self):
         # Remove the <body> tag
         # content = re.sub(r'^\<body\>|\</body\>$', '', unicode(self.article))
-        content = '\n'.join(map(unicode, self.article.contents))
+        content = u'\n'.join(map(unicode, self.article.contents))
         return content
 
     def get_readable_nodes(self):
