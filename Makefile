@@ -5,3 +5,6 @@ clean:
 
 test:
 	PYTHONPATH=. nosetests -w test/ -v
+
+build:
+	python setup.py build
