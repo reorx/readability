@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
 import re
 # import math
+import logging
 import urlparse
 import posixpath
 from bs4 import BeautifulSoup
+from bs4.element import NavigableString
 
 
 logger = logging.getLogger('readability')
@@ -90,8 +91,40 @@ def remove_tags(node, tags):
             e.extract()
 
 
+def stringify_contents(contents):
+    return u''.join(map(unicode, contents))
+
+
+def _get_node_flag(i):
+    if isinstance(i, NavigableString):
+        if unicode(i) == u'\n':
+            i_flag = 'linebreak'
+        else:
+            i_flag = 'text'
+    else:
+        i_flag = 'tag'
+    return i_flag
+
+
 def copy_node(node):
-    return BeautifulSoup(unicode(node))
+    # Strip \n between contents
+    contents = []
+    for loop, i in enumerate(node.children):
+        last_flag = 'tag'
+        i_flag = _get_node_flag(i)
+
+        if loop == 0:
+            if i_flag == 'linebreak':
+                continue
+            last_flag = i_flag
+        else:
+            if last_flag == 'tag' and i_flag == 'linebreak':
+                continue
+            last_flag = i_flag
+        contents.append(i)
+
+    node_str = stringify_contents(contents)
+    return BeautifulSoup(node_str)
 
 
 def fix_images_path(node, url):
@@ -113,11 +146,17 @@ def fix_images_path(node, url):
     return node
 
 
+EMPTY_TAG_LIST = [
+    'a', 'b', 'strong', 'div', 'p', 'span',
+    'article', 'section', 'ul', 'li',
+    'h1', 'h2', 'h3', 'h4', 'h5', ]
+
+
 def clean_node(node):
     # TODO replace brs
 
     # clean empty tags
-    for e in node.find_all(['a', 'b', 'div', 'p', 'span', 'h*', 'article', 'section', 'ul', 'li']):
+    for e in node.find_all(EMPTY_TAG_LIST):
         # has image
         has_image = False
         for i in e.descendants:
@@ -128,23 +167,17 @@ def clean_node(node):
             continue
 
         # has text
-        if e.get_text().strip():  # .replace('\n', '')
+        if e.get_text().strip().replace('\n', ''):
             continue
         e.extract()
 
     # clean wrapper tags
-    for e in node.find_all(['a', 'b', 'div', 'p', 'span', 'h*', 'article', 'section', 'ul', 'li']):
-        if len(e.contents) == 1\
-                and not isinstance(e.contents[0], unicode)\
-                and e.contents[0].name not in ['img', 'b', 'strong', 'i']:
-            e.contents[0].replace_with_children()
-
-    # clean useless
-    for e in node.find_all(True):
-        if e.name == 'div':
-            s = ''.join(map(unicode, e.contents))
-            if not REGEX_OBJS['divToPElements'].search(s):
-                e.name = 'p'
+    # Blocks
+    for e in node.find_all(['div', 'article', 'section']):
+        e.replace_with_children()
+    # Inlines
+    for e in node.find_all(['span']):
+        e.replace_with_children()
 
     # clean attributes
     def clean_attrs(_e):
@@ -235,9 +268,20 @@ class Readability:
         self.winner = self.tops[0]
 
         # use copy_node to prevent winner node from changed
-        self.article = clean_node(copy_node(self.winner['node']))
+        self.article = copy_node(
+            clean_node(
+                copy_node(self.winner['node']).body
+            )
+        ).body
+        stringify_contents(self.winner['node'].contents)
         if self.url:
             self.article = fix_images_path(self.article, self.url)
+
+    def get_article_content(self):
+        # Remove the <body> tag
+        # content = re.sub(r'^\<body\>|\</body\>$', '', unicode(self.article))
+        content = '\n'.join(map(unicode, self.article.contents))
+        return content
 
     def get_readable_nodes(self):
         """
