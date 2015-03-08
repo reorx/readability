@@ -109,7 +109,7 @@ def _get_node_flag(i):
     return i_flag
 
 
-def copy_node(node):
+def node_to_soup(node):
     """
     Copy node to a new BeautifulSoup object, do some formatting & cleaning
     at the same time.
@@ -278,10 +278,10 @@ class Readability:
 
         self.winner = self.tops[0]
 
-        # use copy_node to prevent winner node from changed
-        self.article = copy_node(
+        # use node_to_soup to prevent winner node from changed
+        self.article = node_to_soup(
             clean_node(
-                copy_node(self.winner['node']).body
+                node_to_soup(self.winner['node']).body
             )
         ).body
         stringify_contents(self.winner['node'].contents)
