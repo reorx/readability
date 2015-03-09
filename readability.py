@@ -64,6 +64,14 @@ for k, v in REGEX_PATTERNS.iteritems():
 PURE_STRINGS_FILTER = ['\n']
 
 
+TAGS = {
+    'common_block': ['div', 'fieldset', 'aside', 'article', 'blockquote',
+                     'footer', 'form', 'header', 'main', 'nav', 'p', 'pre',
+                     'section', 'table', 'ul', 'ol',
+                     'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+}
+
+
 def get_element_readable_string(e):
     s = ''
     for i in e.descendants:
@@ -307,8 +315,9 @@ class Readability:
         self.players = []
 
         # NOTE Traversal of the tree should be as less as possible
-        for e in self.soup.body.find_all(True):
-            # If no `__dict__`, its a already removed tag (include children of the removed tag)
+        for e in self.soup.body.find_all(TAGS['common_block']):
+            # If no `__dict__`, its a already removed tag
+            # (include children of the removed tag)
             if not e.__dict__:
                 continue
 
