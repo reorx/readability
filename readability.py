@@ -503,12 +503,27 @@ class Readability:
                 f.write(str(i['node']))
 
 
+def retrieve_http_body(url):
+    import urllib2
+
+    request = urllib2.Request(url)
+    ua = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) '
+          'AppleWebKit/537.36 (KHTML, like Gecko) '
+          'Chrome/41.0.2272.76 Safari/537.36')
+    request.add_header('User-Agent', ua)
+    r = urllib2.urlopen(request)
+    return r.read()
+
+
 if __name__ == '__main__':
-    import requests
+    import sys
 
-    html = requests.get('http://blog.hucheng.com/articles/482.html').content
-    parser = Readability(html.decode('utf8'))
+    url = ('http://www.smashingmagazine.com/2015/03/06/how-being-in-a-band'
+           '-taught-me-to-be-a-better-web-designer/')
+    if sys.argv[1:]:
+        url = sys.argv[1]
 
-    print parser.title
-    print parser.article
-    print parser.article.get_text()
+    html = retrieve_http_body(url).decode('utf8')
+    parser = Readability(html)
+
+    print parser.get_article_content().encode('utf8')
