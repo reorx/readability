@@ -155,21 +155,22 @@ def fix_images_path(node, url):
             continue
 
         if 'http://' != src[:7] and 'https://' != src[:8]:
-            newSrc = urlparse.urljoin(url, src)
+            new_src = urlparse.urljoin(url, src)
 
-            newSrcArr = urlparse.urlparse(newSrc)
-            newPath = posixpath.normpath(newSrcArr[2])
-            newSrc = urlparse.urlunparse((newSrcArr.scheme, newSrcArr.netloc, newPath,
-                                          newSrcArr.params, newSrcArr.query, newSrcArr.fragment))
-            print 'new src', newSrc
-            img['src'] = newSrc
+            new_src_obj = urlparse.urlparse(new_src)
+            new_path = posixpath.normpath(new_src_obj[2])
+            new_src = urlparse.urlunparse(
+                (new_src_obj.scheme, new_src_obj.netloc, new_path,
+                 new_src_obj.params, new_src_obj.query, new_src_obj.fragment))
+            print 'new src', new_src
+            img['src'] = new_src
     return node
 
 
 EMPTY_TAG_LIST = [
     'a', 'b', 'strong', 'div', 'p', 'span',
     'article', 'section', 'ul', 'li',
-    'h1', 'h2', 'h3', 'h4', 'h5', ]
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
 
 def clean_node(node):
@@ -261,10 +262,11 @@ class Readability:
         # the incomplete <p> or </p> will be fixed when soup is constructed
         self.source = format_html(source)
 
-        # Force BeautifulSoup to use lxml as parser (lxml is the best, others may cause problems)
+        # Force BeautifulSoup to use lxml as parser (lxml is the best,
+        # others may cause problems)
         self.soup = BeautifulSoup(self.source, 'lxml')
 
-        # NOTE There is a stange thing in b4.__version__ 4.0.4 (currently 4.0.3)
+        # NOTE There is a stange thing in b4.__version__ 4.0.4
         # that after clean the USELESS_TAGS, <title> in <head> is missing,
         # still don't know where the problem is.
         self.title = u''
@@ -281,7 +283,8 @@ class Readability:
         if len(unsort_tops) == 1:
             tops = unsort_tops
         else:
-            tops = sorted(unsort_tops, key=lambda x: x['priority'], reverse=True)
+            tops = sorted(
+                unsort_tops, key=lambda x: x['priority'], reverse=True)
 
         self.tops = tops
 
@@ -333,15 +336,15 @@ class Readability:
             if REGEX_OBJS['socialPlugins'].search(id_and_class) or\
                     (REGEX_OBJS['unlikelyCandidates'].search(id_and_class) and
                      not REGEX_OBJS['positive'].search(id_and_class)):
-                logger.debug('Reject a node and its children, class & id: %s' % id_and_class)
-                # Use `decompose` instead of `extract` to avoid iteration of the removed tags' children
+                logger.debug(
+                    'Reject a node and its children, class & id: %s',
+                    id_and_class)
+                # Use `decompose` instead of `extract` to avoid iteration
+                # of the removed tags' children
                 e.decompose()
                 continue
 
-            # Clean empty tags
-            #if e.name in ['a', 'b', 'div', 'p', 'span', 'h*', 'article', 'section', 'ul', 'li']\
-                #and (not e.contents or (isinstance(e.contents[0], basestring) and not e.contents[0].strip())):
-                #e.extract()
+            # Clean empty tags ?
 
         # NOTE If filtering and player initializing are in same loop,
         # player's information may not be properly calculated.
@@ -352,7 +355,7 @@ class Readability:
                 'node': e,
                 'deepth': len(list(e.parents)) - 1,
                 'children_num': len(e.contents),
-                # When counting text length, ` ` and `\n` should not be in place
+                # When counting text length, ` ` and `\n` shouldn't be involved
                 'text_len': len(e.get_text().strip().replace('\n', '').replace(' ', '')),
                 'previous_priority': 0,
                 'negative_score': 0,
@@ -390,7 +393,8 @@ class Readability:
         # Skip all next steps, this is for test use.
         return next_round
 
-        # round two, players that smaller than the biggest after multiplys priority factor will be rejected
+        # round two, players that smaller than the biggest
+        # after multiplys priority factor will be rejected
         current_players = next_round
         next_round = []
         for loop, p in enumerate(current_players):
@@ -409,7 +413,8 @@ class Readability:
 
         # Currently stop using this, because what this round wants to do
         # can be easily done in round one (calculate children numbers)
-        # round three, player who is the parent of another player will be rejected
+        # round three, player who is the parent of another player
+        # will be rejected
         if False:
             current_players = next_round
             next_round = []
@@ -428,7 +433,8 @@ class Readability:
                 return next_round
 
         # final round, affect priority in several ways:
-        # 1. try to math negative and positive words in node and descendants' id and classes
+        # 1. try to math negative and positive words in node
+        #    and descendants' id and classes
         # 2. count the <p> tag number in node
         # 3. count commas, include EN and CN characters
         current_players = next_round
