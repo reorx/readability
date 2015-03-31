@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link rel="icon" type="image/vnd.microsoft.icon" href="https://ssl.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = "ABZ6GAd7IezGyB5jQPUUZX8DQUlXUVynFQ:1427725520156";
+ 
+ 
+ var CS_env = {"relativeBaseUrl": "", "projectHomeUrl": "/p/cx-extractor", "assetVersionPath": "https://ssl.gstatic.com/codesite/ph/4119706131923068122", "profileUrl": "/u/117749086707482362829/", "loggedInUserEmail": "novoreorx@gmail.com", "assetHostPath": "https://ssl.gstatic.com/codesite/ph", "projectName": "cx-extractor", "domainName": null, "token": "ABZ6GAd7IezGyB5jQPUUZX8DQUlXUVynFQ:1427725520156"};
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ _gaq.push(
+ ['projectTracker._setAccount', 'UA-10634690-1'],
+ ['projectTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ 
+ </script>
+ 
+ 
+ <title>
+ cx-extractor -
+ 
+ 
+ 基于行块分布函数的通用网页正文抽取：线性时间、不建DOM树、与HTML标签无关 - Google Project Hosting
+ </title>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/4119706131923068122/css/core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/4119706131923068122/css/ph_detail.css" >
+ 
+ 
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/4119706131923068122/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ .psicon-container {
+ min-width:24px;
+ }
+
+ 
+ </style>
+</head>
+<body class="t1">
+<script type="text/javascript">
+ window.___gcfg = {lang: 'en'};
+ (function() 
+ {var po = document.createElement("script");
+ po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+ var s = document.getElementsByTagName("script")[0];
+ s.parentNode.insertBefore(po, s);
+ })();
+</script>
+<div class="headbg">
+
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ 
+ 
+ <a href="#" id="multilogin-dropdown" onclick="return false;"
+ ><u><b>novoreorx@gmail.com</b></u> <small>&#9660;</small></a>
+ 
+ 
+ | <a href="/u/117749086707482362829/" id="projects-dropdown" onclick="return false;"
+ ><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="/u/117749086707482362829/" onclick="_CS_click('/gb/ph/profile');"
+ title="Profile, Updates, and Settings"
+ ><u>Profile</u></a>
+ | <a href="https://www.google.com/accounts/Logout?continue=https%3A%2F%2Fcode.google.com%2Fp%2Fcx-extractor%2F" 
+ onclick="_CS_click('/gb/ph/signout');"
+ ><u>Sign out</u></a>
+ 
+ </span>
+
+ </div>
+
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0"
+ itemscope itemtype="http://schema.org/CreativeWork">
+ <tr style="height: 58px;">
+ 
+ 
+ 
+ <td id="plogo">
+ <link itemprop="url" href="/p/cx-extractor">
+ <a href="/p/cx-extractor/">
+ 
+ <img src="https://ssl.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo" itemprop="image">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/cx-extractor/"><span itemprop="name">cx-extractor</span></a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link"
+ href="/p/cx-extractor/"><span itemprop="description">基于行块分布函数的通用网页正文抽取：线性时间、不建DOM树、与HTML标签无关</span></a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ 
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/cx-extractor/" class="tab active">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/cx-extractor/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/cx-extractor/w/list" class="tab ">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/cx-extractor/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/cx-extractor/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <a href="https://code.google.com/export-to-github/export?project=cx-extractor">
+ <button>Export to GitHub</button>
+ </a>
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <td class="subt">
+ <div class="st1">
+ <div class="isf">
+ <span class="inst1">
+ <a href="/p/cx-extractor/">Summary</a>
+ </span>
+ 
+ 
+ &nbsp;
+ <span class="inst3">
+ <a href="/p/cx-extractor/people/list">People</a>
+ </span>
+ 
+ 
+ </div>
+</div>
+
+ </td>
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+
+
+
+
+
+<table width="100%">
+ <tr class="pscontent">
+ <td class="pscolumnl">
+ 
+ <div class="phead">Project Information</div>
+ 
+ 
+ 
+ <div class="psicon">
+ <div class="psicon-container goog-inline-block">
+ <img width="15" height="15" id="star_img"
+ title="Click to star project"
+ src="https://ssl.gstatic.com/codesite/ph/images/star_on.gif"
+ style="cursor:pointer; float:right"
+ 
+ onclick="_CS_toggleStar(this,
+ {'scope': 'projects',
+ 'user': '_CURRENT_USER',
+ 'item': 'cx-extractor'
+ },
+ true,
+ '',
+ '',
+ '',
+ 'star_count',
+ 'plural');"/>
+ </div>
+ <span>
+ Starred by <span id="star_count">155</span>&nbsp;user<span id="plural">s</span>
+ </span>
+ </div> 
+ 
+ <ul class="pslist">
+ 
+ <li class="psmeta">
+ <a href="/p/cx-extractor/feeds">Project feeds</a>
+ </li>
+ <li class="psgap"/>
+ 
+ 
+ 
+ <li class="psmeta"><b>Code license</b></li>
+ <li class="psmeta">
+ <a href="http://code.google.com/p/support/wiki/FAQ#Which_licenses_can_be_used?" rel="nofollow">Other Open Source</a>
+ <br>See source for details
+ </li>
+ <li class="psgap"/>
+ 
+ 
+ 
+ 
+ 
+ 
+ <li class="psmeta">
+ <span id="project_labels">
+ <b>Labels</b><br/>
+ 
+ <a class="label"
+ href="/hosting/search?q=label:行块分布函数">行块分布函数</a>, 
+ 
+ <a class="label"
+ href="/hosting/search?q=label:网页正文提取">网页正文提取</a>, 
+ 
+ <a class="label"
+ href="/hosting/search?q=label:DOM树">DOM树</a>, 
+ 
+ <a class="label"
+ href="/hosting/search?q=label:线性时间">线性时间</a>, 
+ 
+ <a class="label"
+ href="/hosting/search?q=label:HTML标签无关">HTML标签无关</a>, 
+ 
+ <a class="label"
+ href="/hosting/search?q=label:网页正文抽取">网页正文抽取</a>
+ 
+ </span>
+ </li>
+ <li class="psgap"/>
+ 
+ 
+ </ul>
+ <div class="psicon">
+ <div class="psicon-container goog-inline-block">
+ <div style="float:right" class="SPRITE_people-y16 goog-inline-block vt"></div>
+ </div>
+ <span><b>Members</b></span>
+ </div>
+ <ul class="pslist">
+ 
+ 
+ 
+ 
+
+ <a class="userlink"
+ href="/u/104050471376532821421/">cx3...@gmail.com</a
+>
+ 
+ 
+ 
+ <li class="psmeta">
+ <a href="people/list">5 committers</a>
+ </li>
+ 
+ 
+ <li class="psgap"/>
+ 
+ 
+ </ul>
+ 
+ 
+ <div class="phead pfeatured">Featured</div>
+ 
+ <div class="psicon">
+ <div class="psicon-container goog-inline-block">
+ <div style="float:right" class="SPRITE_filedownload-g16 goog-inline-block vt"></div>
+ </div>
+ <span><b>Downloads</b></span>
+ </div>
+ <ul class="pslist">
+ 
+ <li class="psmeta nowrap">
+ <a title="Download" href="//cx-extractor.googlecode.com/files/cx-extractor-1.1.zip" onclick="_gaq.push(['siteTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/cx-extractor-1.1.zip', 'Featured']);_gaq.push(['projectTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/cx-extractor-1.1.zip', 'Featured']);">
+ </a>
+ <a href="downloads/detail?name=cx-extractor-1.1.zip"
+ title="add php version for directly web use.">cx-extractor-1.1.zip</a>
+ </li>
+ 
+ <li class="psmeta nowrap">
+ <a title="Download" href="//cx-extractor.googlecode.com/files/cx-extractor.zip" onclick="_gaq.push(['siteTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/cx-extractor.zip', 'Featured']);_gaq.push(['projectTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/cx-extractor.zip', 'Featured']);">
+ </a>
+ <a href="downloads/detail?name=cx-extractor.zip"
+ title="cx-extractor-1.0,  include src,demo,doc.">cx-extractor.zip</a>
+ </li>
+ 
+ <li class="psmeta nowrap">
+ <a title="Download" href="//cx-extractor.googlecode.com/files/%E5%9F%BA%E4%BA%8E%E8%A1%8C%E5%9D%97%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%9A%E7%94%A8%E7%BD%91%E9%A1%B5%E6%AD%A3%E6%96%87%E6%8A%BD%E5%8F%96%E7%AE%97%E6%B3%95.pdf" onclick="_gaq.push(['siteTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/%E5%9F%BA%E4%BA%8E%E8%A1%8C%E5%9D%97%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%9A%E7%94%A8%E7%BD%91%E9%A1%B5%E6%AD%A3%E6%96%87%E6%8A%BD%E5%8F%96%E7%AE%97%E6%B3%95.pdf', 'Featured']);_gaq.push(['projectTracker._trackEvent', 'Download - Downloaded', '//cx-extractor.googlecode.com/files/%E5%9F%BA%E4%BA%8E%E8%A1%8C%E5%9D%97%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%9A%E7%94%A8%E7%BD%91%E9%A1%B5%E6%AD%A3%E6%96%87%E6%8A%BD%E5%8F%96%E7%AE%97%E6%B3%95.pdf', 'Featured']);">
+ </a>
+ <a href="downloads/detail?name=%E5%9F%BA%E4%BA%8E%E8%A1%8C%E5%9D%97%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%9A%E7%94%A8%E7%BD%91%E9%A1%B5%E6%AD%A3%E6%96%87%E6%8A%BD%E5%8F%96%E7%AE%97%E6%B3%95.pdf"
+ title="基于行块分布函数的网页正文抽取">基于行块分布函数的通用网页正文抽取算法.pdf</a>
+ </li>
+ 
+ <li class="psmeta"><a href="downloads/list">Show all &raquo</a></li>
+ <li class="psgap"/>
+ </ul>
+ 
+ 
+ 
+ 
+ 
+ <div class="phead">Links</div>
+ <ul class="pslist" style="white-space:nowrap">
+ 
+ <li class="psmeta"><b>Blogs</b></li>
+ 
+ <li class="psmeta">
+ <a href="http://weibo.com/cx3180" rel="nofollow">cx3180</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://hi.baidu.com/xwf_like" rel="nofollow">xwf1788</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://hi.baidu.com/fandywang_jlu" rel="nofollow">fandywang</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://blog.csdn.net/luoleicn" rel="nofollow">luolei</a>
+ </li>
+ 
+ <li class="psgap"/>
+ 
+ 
+ <li class="psmeta"><b>External links</b></li>
+ 
+ <li class="psmeta">
+ <a href="http://ir.hit.edu.cn/~xchen" rel="nofollow">Personal Homepage</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://ir.hit.edu.cn" rel="nofollow">HIT-CIR</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://www.insun.hit.edu.cn" rel="nofollow">HIT-ITNLP</a>
+ </li>
+ 
+ <li class="psmeta">
+ <a href="http://www.ict.cas.cn/" rel="nofollow">ICT-CAS</a>
+ </li>
+ 
+ <li class="psgap"/>
+ 
+ 
+ </ul>
+ 
+ </td>
+ <td id="wikicontent" class="psdescription">
+ <p>对于Web信息检索来说，网页正文抽取是后续处理的关键。 </p><p>虽然使用正则表达式可以准确的抽取某一固定格式的页面，但面对形形色色的HTML，使用规则处理难免捉襟见肘。能不能高效、准确的将一个页面的正文抽取出来，并做到在大规模网页范围内通用，这是一个直接关系上层应用的难题。 </p><p><a href="http://weibo.com/cx3180" rel="nofollow">作者</a>提出了<a href="http://cx-extractor.googlecode.com/files/%E5%9F%BA%E4%BA%8E%E8%A1%8C%E5%9D%97%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%9A%E7%94%A8%E7%BD%91%E9%A1%B5%E6%AD%A3%E6%96%87%E6%8A%BD%E5%8F%96%E7%AE%97%E6%B3%95.pdf" rel="nofollow">《基于行块分布函数的通用网页正文抽取算法》</a>，首次将网页正文抽取问题转化为求页面的行块分布函数，这种方法不用建立Dom树，不被病态HTML所累（事实上与HTML标签完全无关）。通过在线性时间内建立的行块分布函数图，直接准确定位网页正文。同时采用了统计与规则相结合的方法来处理通用性问题。作者相信简单的事情总应该用最简单的办法来解决这一亘古不变的道理。整个算法实现代码不足百行。但量不在多，在法。 </p><p>建议使用svn checkout <a href="http://cx-extractor.googlecode.com/svn/trunk/" rel="nofollow">http://cx-extractor.googlecode.com/svn/trunk/</a>，svn的好处是更新及时，zip包作者不能保证每次修改完后都及时上传 <strong>:)</strong> </p><p><br> There are undoubtedly serious bugs lurking somewhere in code this funky. So feel free to contact us if you meet any problem.<br> Bug reports and other feedback are most welcome :-)  <table class="wikitable"><tr><td style="border: 1px solid #ccc; padding: 5px;"> <strong>Version</strong> </td><td style="border: 1px solid #ccc; padding: 5px;"> <strong>Author</strong> </td><td style="border: 1px solid #ccc; padding: 5px;"> <strong>Email</strong> </td><td style="border: 1px solid #ccc; padding: 5px;"> <strong>Institute</strong> </td></tr> <tr><td style="border: 1px solid #ccc; padding: 5px;">Perl</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://ir.hit.edu.cn/~xchen" rel="nofollow">陈鑫</a></td><td style="border: 1px solid #ccc; padding: 5px;">xchen@ir.hit.edu.cn</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://ir.hit.edu.cn" rel="nofollow">哈工大信息检索研究中心</a></td></tr> <tr><td style="border: 1px solid #ccc; padding: 5px;">Java</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://ir.hit.edu.cn/~lfwang" rel="nofollow">王利锋</a>、<a href="http://ir.hit.edu.cn/~lluo" rel="nofollow">罗磊</a></td><td style="border: 1px solid #ccc; padding: 5px;">{lfwang,lluo}@ir.hit.edu.cn</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://ir.hit.edu.cn" rel="nofollow">哈工大信息检索研究中心</a></td></tr> <tr><td style="border: 1px solid #ccc; padding: 5px;">C++</td><td style="border: 1px solid #ccc; padding: 5px;">朱亮</td><td style="border: 1px solid #ccc; padding: 5px;">zhuliang@software.ict.ac.cn</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://www.ict.ac.cn" rel="nofollow">中科院计算所高级网络重点实验室</a></td></tr> <tr><td style="border: 1px solid #ccc; padding: 5px;">PHP</td><td style="border: 1px solid #ccc; padding: 5px;">轩文烽</td><td style="border: 1px solid #ccc; padding: 5px;">xwf1788@gmail.com</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://www.insun.hit.edu.cn" rel="nofollow">哈工大智能技术与自然语言处理研究室</a></td></tr> <tr><td style="border: 1px solid #ccc; padding: 5px;">C#</td><td style="border: 1px solid #ccc; padding: 5px;">张帆</td><td style="border: 1px solid #ccc; padding: 5px;">zfannn@gmail.com</td><td style="border: 1px solid #ccc; padding: 5px;"><a href="http://www.gu.cas.cn/yxsz/xxkxygcxy/" rel="nofollow">中科院信息科学与工程学院</a></td></tr> </table></p><p><br> 如果您正在关注或使用cx-extractor，同时希望在第一时间得到该项目的更新信息，<br>您可以加入该项目的邮件列表 <a href="http://list.qq.com/cgi-bin/qf_invite?id=2a19dc7f75fcba75ee9962adfcf5013e3154e3b92ef767a3" rel="nofollow">http://list.qq.com/cgi-bin/qf_invite?id=2a19dc7f75fcba75ee9962adfcf5013e3154e3b92ef767a3</a><br><br> </p><p>本软件的使用许可协议:<a href="http://cn.creativecommons.org/licenses/meet-the-licenses/" rel="nofollow">署名-非商业性使用-相同方式共享 (by-nc-sa)</a>，新浪微博<a href="http://weibo.com/cx3180" rel="nofollow">http://weibo.com/cx3180</a> </p>
+ </td>
+ </tr>
+</table>
+<script src="https://ssl.gstatic.com/codesite/ph/4119706131923068122/js/prettify/prettify_core_compiled.js"></script>
+<script type="text/javascript">
+ prettyPrint();
+</script>
+
+ 
+ 
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/4119706131923068122/js/ph_core.js"></script>
+ 
+ 
+ 
+ 
+</div> 
+
+<div id="footer" dir="ltr">
+ <div class="text">
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
