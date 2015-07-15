@@ -27,3 +27,5 @@ if __name__ == '__main__':
     n0 = parser.tops[0]['node']
     print type(n0)
     print n0.get_path()
+
+    print parser.article

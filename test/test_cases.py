@@ -33,9 +33,9 @@ def check_readability(filename):
     parser = Readability(html)
     article_text = parser.article.get_text()
     rate = distance_rate(article_text, text)
-    print article_text
     print 'rate', rate
-    assert rate > 0.85
+    print article_text
+    assert rate > 0.95
 
 
 if __name__ == '__main__':
